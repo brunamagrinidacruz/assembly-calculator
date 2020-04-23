@@ -3,3 +3,4 @@
 	.text
 	.globl main
 main:
+aaaaa
