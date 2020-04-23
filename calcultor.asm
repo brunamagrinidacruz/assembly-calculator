@@ -83,26 +83,29 @@ encerrar:
 	
 #-------------------------------------Soma-------------------------------------	
 soma:
-	# salvando registradores na pilha
+	#Empilhando $a0
 	addi $sp, $sp, -4 
 	sw $a0, 0($sp)
 	
+	#Lendo entrada
 	jal ler_entrada_dupla
 	move $t1, $v0
 	move $t2, $v1
 	
+	#Somando
 	add $t3, $t1, $t2
 	
-	li $v0, 4 # codigo para imprimir string
-	la $a0, saida_resultado # imprime saida_resultado
+	#Imprimindo saida_resultado
+	li $v0, 4
+	la $a0, saida_resultado 
 	syscall 
 	
-	li $v0, 1 # codigo para imprimir inteiro
-	move $a0, $t3 # inteiro a ser impresso
+	#Imprimindo resultado da soma
+	li $v0, 1 
+	move $a0, $t3 
 	syscall
 	
-	# desempilha registradores
-
+	#Desempilhando a0
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
 	
@@ -145,26 +148,29 @@ multiplicacao:
 
 #-------------------------------------Divisão-------------------------------------
 divisao:
-	# salvando registradores na pilha
+	#Empilhando a0
 	addi $sp, $sp, -4 
 	sw $a0, 0($sp)
 	
+	#Lendo entrada
 	jal ler_entrada_dupla
 	move $t1, $v0
 	move $t2, $v1
 	
+	#Dividindo
 	div $t3, $t1, $t2
 	
-	li $v0, 4 # codigo para imprimir string
-	la $a0, saida_resultado # imprime saida_resultado
+	#Imprimindo saida_resultado
+	li $v0, 4 
+	la $a0, saida_resultado 
 	syscall 
 	
-	li $v0, 1 # codigo para imprimir inteiro
-	move $a0, $t3 # inteiro a ser impresso
+	#Imprimindo resultado da divisao
+	li $v0, 1 
+	move $a0, $t3 
 	syscall
 	
-	# desempilha registradores
-
+	#Desempilhando a0
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
 	
@@ -224,55 +230,61 @@ endloop_raiz_quadrada:
 
 #-------------------------------------Tabuada-------------------------------------
 tabuada:
+	#Empilhando a0
 	addi $sp, $sp, -4 
 	sw $a0, 0($sp)
 	
+	#Lendo entrada
 	jal ler_entrada_unica
 	move $t1, $v0
 	
-	li $t2, 0 # carrega valor 0 para $t2
-	li $t4, 11 # carrega valor 11 para $t4	
+	#Inicializando contador
+	li $t2, 0 
+	li $t4, 11 
 	
 loop_tabuada:
+	#Verificando se t2 = t4
 	beq $t2, $t4, fim_tabuada
 	
+	#Multiplicando 
 	mul $t3, $t1, $t2
 	
-	# imprime valor contido em $t1 
+	#Imprimindo valor contido em t1 
 	li $v0, 1 
 	move $a0, $t1 
 	syscall
 	
-	# imprime " * "
+	#Imprimindo " * "
 	li $v0, 4 
 	la $a0, operador_mult_tab 
 	syscall
 	
-	# imprime valor contido em $t2
+	#Imprimindo valor contido em $t2
 	li $v0, 1 
 	move $a0, $t2 
 	syscall
 	
-	# imprime " = "
+	#Imprimindo " = "
 	li $v0, 4 
 	la $a0, operador_igual 
 	syscall
 	
-	# imprime resultado contido em $t3
+	#Imprimindo resultado contido em $t3
 	li $v0, 1
 	move $a0, $t3
 	syscall
 	
-	# pula uma linha
+	#Pulando uma linha
 	li $v0, 4 
 	la $a0, pula_linha 
 	syscall
 	
-	# incrementa t2
+	#Incrementando t2
 	addi $t2, $t2, 1
 	jal loop_tabuada
 	
 fim_tabuada:
+	#Desempilhando a0
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
 	
