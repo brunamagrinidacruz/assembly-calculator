@@ -67,12 +67,8 @@ encerrar:
 	
 soma:
 	# salvando registradores na pilha
-	addi $sp, $sp, -16 
-	
-	sw $t1, 0($sp) 
-	sw $t2, 4($sp) 
-	sw $t3, 8($sp) 
-	sw $a0, 12($sp)
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
 	
 	li $v0, 4 # codigo para imprimir string
 	la $a0, string1 # imprime string1
@@ -104,12 +100,9 @@ soma:
 	
 	# desempilha registradores
 
-	lw $a0, 12($sp)
-	lw $t3, 8($sp)
-	lw $t2, 4($sp)
-	lw $t1, 0($sp)
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 	
-	addi $sp, $sp, 16
 	j principal
 	
 subtracao:
@@ -120,12 +113,8 @@ multiplicacao:
 	
 divisao:
 	# salvando registradores na pilha
-	addi $sp, $sp, -16 
-	
-	sw $t1, 0($sp) 
-	sw $t2, 4($sp) 
-	sw $t3, 8($sp) 
-	sw $a0, 12($sp)
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
 	
 	li $v0, 4 # codigo para imprimir string
 	la $a0, string1 # imprime string1
@@ -157,12 +146,8 @@ divisao:
 	
 	# desempilha registradores
 
-	lw $a0, 12($sp)
-	lw $t3, 8($sp)
-	lw $t2, 4($sp)
-	lw $t1, 0($sp)
-	
-	addi $sp, $sp, 16
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 	
 	j principal
 	
@@ -173,6 +158,7 @@ raiz_quadrada:
 	j principal
 	
 tabuada:
+	
 	j principal
 	
 imc:
