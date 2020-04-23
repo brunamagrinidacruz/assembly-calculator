@@ -14,7 +14,6 @@ pula_linha: .asciiz "\n"
 operador_mult_tab: .asciiz " * "
 operador_igual: .asciiz " = "
 
-
 	.text
 	.globl main
 	
