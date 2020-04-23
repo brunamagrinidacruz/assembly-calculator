@@ -327,7 +327,71 @@ endloop_fatorial:
 
 #-------------------------------------Fibonacci-------------------------------------
 fibonacci:
+	# salva registradores na pilha
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
+		
+	jal ler_entrada_unica
+	move $t0, $v0
+	
+	li $t1, 2 # contador
+	li $t2, 0 
+	li $t3, 1 
+	li $t4, 0
+	
+	#Imprimindo o primeiro valor do Fibonacci
+	li $v0, 1
+	move $a0, $t2
+	syscall
+	
+	#Imprimindo espaco
+	li $v0, 4
+	la $a0, espaco
+	syscall
+	
+	#Imprimindo o segundo valor do Fibonacci
+	li $v0, 1
+	move $a0, $t3
+	syscall
+	
+	#Imprimindo espaco
+	li $v0, 4
+	la $a0, espaco
+	syscall
+	
+	jal loop_fibonacci
+	
+	# desempilha registradores
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 	j principal
+	
+loop_fibonacci:
+	#Se o contador for igual a entrada do usuário, encerra
+	beq $t0, $t1, fim_fibonacci
+
+	#Faz o cálculo do Fibonacci
+	add $t4, $t2, $t3
+	
+	#Imprime resultado
+	li $v0, 1
+	move $a0, $t4
+	syscall
+	
+	#Imprime espaco
+	li $v0, 4
+	la $a0, espaco
+	syscall
+	
+	#Ajustando a sequencia de Fibonacci
+	addi $t2, $t3, 0
+	addi $t3, $t4, 0
+	addi $t1, $t1, 1
+	
+	j loop_fibonacci
+	
+fim_fibonacci:
+	jr $ra
 
 #-------------------------------------Funções de leitura-------------------------------------	
 
@@ -385,7 +449,7 @@ ler_entrada_unica:
 	
 	#Enviando como retorno do procedimento
 	move $v0, $t1
-	
+
 	#Desempilhando $a0
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
