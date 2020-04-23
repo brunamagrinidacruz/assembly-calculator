@@ -1,18 +1,28 @@
 	.data
 	
 	.align 0
+
+#Menu
 menu_inicio: .asciiz "Bem-vindo a calculadora!"
 menu_borda: .asciiz "\n-------------------------\n"
 menu_selecao: .asciiz "Selecione a operação desejada\n"
 menu_operacoes: .asciiz "1 - Soma\n2 - Subtracao\n3 - Multiplicação\n4 - Divisão\n5 - Potencia\n6 - Raiz quadrada\n7 - Tabuada\n8 - IMC\n9 - Fatorial\n10 - Fibonacci\n0 - Encerrrar"
-string1: .asciiz "Digite o primeiro valor: "
-string2: .asciiz "Digite o segundo valor: "
+
+#Entrada
+entrada_primeiro: .asciiz "Digite o primeiro valor: "
+entrada_segundo: .asciiz "Digite o segundo valor: "
 entrada_unica: .asciiz "Digite o valor: "
-string_result: .asciiz "Resultado: "
-string_valor: .asciiz "Digite o valor: "
-pula_linha: .asciiz "\n"
+
+#Saida
+saida_resultado: .asciiz "Resultado: "
+
+#Tabuada
 operador_mult_tab: .asciiz " * "
 operador_igual: .asciiz " = "
+
+#Outros
+pula_linha: .asciiz "\n"
+espaco: .asciiz " "
 
 	.text
 	.globl main
@@ -77,7 +87,7 @@ soma:
 	sw $a0, 0($sp)
 	
 	li $v0, 4 # codigo para imprimir string
-	la $a0, string1 # imprime string1
+	la $a0, entrada_primeiro # imprime entrada_primeiro
 	syscall 
 	
 	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0
@@ -86,7 +96,7 @@ soma:
 	move $t1, $v0 # transfere o valor de $v0 para $t1
 	
 	li $v0, 4 # codigo para imprimir string
-	la $a0, string2 # imprime string2
+	la $a0, entrada_segundo # imprime entrada_segundo
 	syscall 
 	
 	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0 
@@ -97,7 +107,7 @@ soma:
 	add $t3, $t1, $t2
 	
 	li $v0, 4 # codigo para imprimir string
-	la $a0, string_result # imprime string_result
+	la $a0, saida_resultado # imprime saida_resultado
 	syscall 
 	
 	li $v0, 1 # codigo para imprimir inteiro
@@ -121,7 +131,7 @@ multiplicacao:
 	
 	#Imprimindo texto auxiliar
 	li $v0, 4
-	la $a0, string1
+	la $a0, entrada_primeiro
 	syscall 
 	
 	#Recebendo primeiro valor e armazenando em $t1
@@ -131,7 +141,7 @@ multiplicacao:
 	
 	#Imprimindo texto auxiliar 	
 	li $v0, 4
-	la $a0, string2
+	la $a0, entrada_segundo
 	syscall 
 	
 	#Recebendo segundo valor e armazenando em $t2
@@ -144,7 +154,7 @@ multiplicacao:
 	
 	#Imprimindo texto auxiliar
 	li $v0, 4
-	la $a0, string_result
+	la $a0, saida_resultado
 	syscall 
 	
 	#Imprimindo resultado
@@ -164,7 +174,7 @@ divisao:
 	sw $a0, 0($sp)
 	
 	li $v0, 4 # codigo para imprimir string
-	la $a0, string1 # imprime string1
+	la $a0, entrada_primeiro # imprime entrada_primeiro
 	syscall 
 	
 	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0
@@ -173,7 +183,7 @@ divisao:
 	move $t1, $v0 # transfere o valor de $v0 para $t1
 	
 	li $v0, 4 # codigo para imprimir string
-	la $a0, string2 # imprime string2
+	la $a0, entrada_segundo # imprime entrada_segundo
 	syscall 
 	
 	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0 
@@ -184,7 +194,7 @@ divisao:
 	div $t3, $t1, $t2
 	
 	li $v0, 4 # codigo para imprimir string
-	la $a0, string_result # imprime string_result
+	la $a0, saida_resultado # imprime saida_resultado
 	syscall 
 	
 	li $v0, 1 # codigo para imprimir inteiro
@@ -227,7 +237,7 @@ loop_raiz_quadrada:
 	bgt $t2, $t1, endloop_raiz_quadrada_ultrapassou
 
 	#Incrementando o contador	
-	addi $t3, $t0, 1
+	addi $t0, $t0, 1
 	
 	#Atualizando resultado para pegar a $t3^2 
 	mul $t2, $t0, $t0
@@ -240,7 +250,7 @@ endloop_raiz_quadrada_ultrapassou:
 endloop_raiz_quadrada:
 	#Imprimindo texto auxiliar
 	li $v0, 4
-	la $a0, string_result
+	la $a0, saida_resultado
 	syscall 
 	
 	#Imprimindo resultado
@@ -259,7 +269,7 @@ tabuada:
 	sw $a0, 0($sp)
 	
 	li $v0, 4 # codigo para imprimir string
-	la $a0, string_valor # imprime string_valor
+	la $a0, entrada_unica # imprime entrada_unica
 	syscall 
 	
 	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0
@@ -351,7 +361,7 @@ loop_fatorial:
 endloop_fatorial:
 	#Imprimindo texto auxiliar
 	li $v0, 4
-	la $a0, string_result
+	la $a0, saida_resultado
 	syscall 
 	
 	#Imprimindo resultado
@@ -366,8 +376,58 @@ endloop_fatorial:
 	j principal
 	
 fibonacci:
+	# salva registradores na pilha
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
+	
+	li $v0, 4 # codigo para imprimir string
+	la $a0, entrada_unica # imprime entrada_unica
+	syscall
+	
+	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0
+	syscall
+	
+	move $t0, $v0 # transfere o valor de $v0 para $t0
+	
+	li $t1, -1 # carrega -1 para $t1
+	li $t2, 0 # carrega 0 para $t2
+	li $t3, 1 # carrega 1 para $t3
+	
+	li $v0, 1
+	move $a0, $t2
+	syscall
+	
+	li $v0, 4
+	la $a0, espaco
+	syscall
+	
+	li $v0, 1
+	move $a0, $t3
+	syscall
+	
+	jal loop_fibonacci
+	
+	# desempilha registradores
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 	j principal
 	
-recebe_entrada_unica:
-recebe_entrada:
+loop_fibonacci:
+	beq $t0, $t1, fim_fibonacci
 	
+	add $t2, $t2, $t3
+	
+	li $v0, 1
+	move $a0, $t2
+	syscall
+	
+	li $v0, 4
+	la $a0, espaco
+	syscall
+	
+	lw $t3, 0($t2)
+	addi $t0, $t0, 1
+	jal loop_fibonacci
+	
+fim_fibonacci:
+	jr $ra
