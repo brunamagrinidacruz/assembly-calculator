@@ -1,7 +1,7 @@
 	.data
 	.align 0
-menu_inicio: .asciiz "Bem-vindo a calculadora!\n"
-menu_borda: .asciiz "-------------------------\n"
+menu_inicio: .asciiz "Bem-vindo a calculadora!"
+menu_borda: .asciiz "\n-------------------------\n"
 menu_selecao: .asciiz "Selecione a operação desejada\n"
 menu_operacoes: .asciiz "1 - Soma\n2 - Subtracao\n3 - Multiplicação\n4 - Divisão\n5 - Potencia\n6 - Raiz quadrada\n7 - Tabuada\n8 - IMC\n9 - Fatorial\n10 - Fibonacci\n0 - Encerrrar\n"
 string1: .asciiz "Digite o primeiro valor: "
