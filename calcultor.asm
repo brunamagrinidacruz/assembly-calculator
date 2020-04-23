@@ -9,6 +9,11 @@ string1: .asciiz "Digite o primeiro valor: "
 string2: .asciiz "Digite o segundo valor: "
 entrada_unica: .asciiz "Digite o valor: "
 string_result: .asciiz "Resultado: "
+string_valor: .asciiz "Digite o valor: "
+pula_linha: .asciiz "\n"
+operador_mult_tab: .asciiz " * "
+operador_igual: .asciiz " = "
+
 
 	.text
 	.globl main
@@ -251,6 +256,63 @@ endloop_raiz_quadrada:
 	j principal
 	
 tabuada:
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
+	
+	li $v0, 4 # codigo para imprimir string
+	la $a0, string_valor # imprime string_valor
+	syscall 
+	
+	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0
+	syscall
+	
+	move $t1, $v0 # transfere o valor de $v0 para $t1
+	
+	li $t2, 0 # carrega valor 0 para $t2
+	li $t4, 11 # carrega valor 11 para $t4	
+	
+loop_tabuada:
+	beq $t2, $t4, fim_tabuada
+	
+	mul $t3, $t1, $t2
+	
+	# imprime valor contido em $t1 
+	li $v0, 1 
+	move $a0, $t1 
+	syscall
+	
+	# imprime " * "
+	li $v0, 4 
+	la $a0, operador_mult_tab 
+	syscall
+	
+	# imprime valor contido em $t2
+	li $v0, 1 
+	move $a0, $t2 
+	syscall
+	
+	# imprime " = "
+	li $v0, 4 
+	la $a0, operador_igual 
+	syscall
+	
+	# imprime resultado contido em $t3
+	li $v0, 1
+	move $a0, $t3
+	syscall
+	
+	# pula uma linha
+	li $v0, 4 
+	la $a0, pula_linha 
+	syscall
+	
+	# incrementa t2
+	addi $t2, $t2, 1
+	jal loop_tabuada
+	
+fim_tabuada:
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 	
 	j principal
 	
