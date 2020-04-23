@@ -1,6 +1,8 @@
 	.data
-#minhastring: .asciiz "Isadora"
+#Isadora ok
+#Magrini ok
+#Marlon
+
 	.text
 	.globl main
 main:
-aaaaa
