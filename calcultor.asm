@@ -354,9 +354,10 @@ fibonacci:
 	
 	move $t0, $v0 # transfere o valor de $v0 para $t0
 	
-	li $t1, -1 # carrega -1 para $t1
-	li $t2, 0 # carrega 0 para $t2
-	li $t3, 1 # carrega 1 para $t3
+	li $t1, 2 # contador
+	li $t2, 0 
+	li $t3, 1 
+	li $t4, 0
 	
 	li $v0, 1
 	move $a0, $t2
@@ -370,6 +371,10 @@ fibonacci:
 	move $a0, $t3
 	syscall
 	
+	li $v0, 4
+	la $a0, espaco
+	syscall
+	
 	jal loop_fibonacci
 	
 	# desempilha registradores
@@ -379,20 +384,21 @@ fibonacci:
 	
 loop_fibonacci:
 	beq $t0, $t1, fim_fibonacci
-	
-	add $t2, $t2, $t3
+
+	add $t4, $t2, $t3
 	
 	li $v0, 1
-	move $a0, $t2
+	move $a0, $t4
 	syscall
 	
 	li $v0, 4
 	la $a0, espaco
 	syscall
 	
-	lw $t3, 0($t2)
-	addi $t0, $t0, 1
-	jal loop_fibonacci
+	addi $t2, $t3, 0
+	addi $t3, $t4, 0
+	addi $t1, $t1, 1
+	j loop_fibonacci
 	
 fim_fibonacci:
 	jr $ra
