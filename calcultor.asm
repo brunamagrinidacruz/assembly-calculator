@@ -1,5 +1,5 @@
 	.data
-minhastring: .asciiz "Isadora"
+#minhastring: .asciiz "Isadora"
 	.text
 	.globl main
 main:
