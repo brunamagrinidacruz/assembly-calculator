@@ -1,12 +1,14 @@
 	.data
+	
 	.align 0
 	
 menu_inicio: .asciiz "Bem-vindo a calculadora!"
 menu_borda: .asciiz "\n-------------------------\n"
 menu_selecao: .asciiz "Selecione a operação desejada\n"
-menu_operacoes: .asciiz "1 - Soma\n2 - Subtracao\n3 - Multiplicação\n4 - Divisão\n5 - Potencia\n6 - Raiz quadrada\n7 - Tabuada\n8 - IMC\n9 - Fatorial\n10 - Fibonacci\n0 - Encerrrar\n"
+menu_operacoes: .asciiz "1 - Soma\n2 - Subtracao\n3 - Multiplicação\n4 - Divisão\n5 - Potencia\n6 - Raiz quadrada\n7 - Tabuada\n8 - IMC\n9 - Fatorial\n10 - Fibonacci\n0 - Encerrrar"
 string1: .asciiz "Digite o primeiro valor: "
 string2: .asciiz "Digite o segundo valor: "
+entrada_unica: .asciiz "Digite o valor: "
 string_result: .asciiz "Resultado: "
 string_valor: .asciiz "Digite o valor: "
 pula_linha: .asciiz "\n"
@@ -115,6 +117,47 @@ subtracao:
 	j principal
 	
 multiplicacao:
+	#Armazenando $v0 na pilha
+	addi $sp, $sp, -4
+	sw $v0, 0($sp)	
+	
+	#Imprimindo texto auxiliar
+	li $v0, 4
+	la $a0, string1
+	syscall 
+	
+	#Recebendo primeiro valor e armazenando em $t1
+	li $v0, 5
+	syscall
+	move $t1, $v0
+	
+	#Imprimindo texto auxiliar 	
+	li $v0, 4
+	la $a0, string2
+	syscall 
+	
+	#Recebendo segundo valor e armazenando em $t2
+	li $v0, 5
+	syscall
+	move $t2, $v0
+
+	#Multiplicando
+	mul $t0, $t1, $t2
+	
+	#Imprimindo texto auxiliar
+	li $v0, 4
+	la $a0, string_result
+	syscall 
+	
+	#Imprimindo resultado
+	li $v0, 1
+	move $a0, $t0
+	syscall 
+	
+	#Retornando o valor de $v0
+	lw $v0, 0($sp)
+	addi $sp, $sp, 4
+			
 	j principal
 	
 divisao:
@@ -161,6 +204,56 @@ potencia:
 	j principal
 	
 raiz_quadrada:
+	#Armazenando $v0 na pilha
+	addi $sp, $sp, -4
+	sw $v0, 0($sp)	
+	
+	#Imprimindo texto auxiliar
+	li $v0, 4
+	la $a0, entrada_unica
+	syscall 
+
+	#Recebendo o valor a ser calculado e armazenando em $t1
+	li $v0, 5
+	syscall
+	move $t1, $v0
+	
+	#Calculo da raiz quadrada
+	li $t2, 1 #Armazenara o resultado
+	li $t0, 1 #Contador
+	
+loop_raiz_quadrada:
+	#Se $t2 (armazenador do resultado) for igual ao valor de entrada, finaliza
+	beq $t1, $t2, endloop_raiz_quadrada
+	#Se $t2 (armazenador do resultado) for maior que o valor de entrada, o resultado deve ser o $t3 anterior
+	bgt $t2, $t1, endloop_raiz_quadrada_ultrapassou
+
+	#Incrementando o contador	
+	addi $t3, $t0, 1
+	
+	#Atualizando resultado para pegar a $t3^2 
+	mul $t2, $t0, $t0
+	
+	j loop_raiz_quadrada
+	
+endloop_raiz_quadrada_ultrapassou:
+	addi $t0, $t0, -1
+	
+endloop_raiz_quadrada:
+	#Imprimindo texto auxiliar
+	li $v0, 4
+	la $a0, string_result
+	syscall 
+	
+	#Imprimindo resultado
+	li $v0, 1
+	move $a0, $t0
+	syscall
+	 
+	#Retornando o valor de $v0
+	lw $v0, 0($sp)
+	addi $sp, $sp, 4
+		
 	j principal
 	
 tabuada:
@@ -228,6 +321,50 @@ imc:
 	j principal
 	
 fatorial:
+	#Armazenando $v0 na pilha
+	addi $sp, $sp, -4
+	sw $v0, 0($sp)	
+	
+	#Imprimindo texto auxiliar
+	li $v0, 4
+	la $a0, entrada_unica
+	syscall 
+
+	#Recebendo o valor a ser calculado e armazenando em $t1
+	li $v0, 5
+	syscall
+	move $t1, $v0
+	
+	#Será o acumulador do resultado
+	addi $t0, $zero, 1
+	#Usado como caso de parada
+	addi $t2, $zero, 1
+
+loop_fatorial:			
+	#Se a quantidade de multiplicacoes (numero do fatorial) for menor ou igual a 1, encerra
+	ble $t1, $t2, endloop_fatorial
+
+	#Calculando o novo fatorial
+	mul $t0, $t0, $t1	
+	#Decrementando o contador
+        addi $t1, $t1, -1	
+   	j loop_fatorial
+	
+endloop_fatorial:
+	#Imprimindo texto auxiliar
+	li $v0, 4
+	la $a0, string_result
+	syscall 
+	
+	#Imprimindo resultado
+	li $v0, 1
+	move $a0, $t0
+	syscall
+	
+	#Retornando o valor de $v0
+	lw $v0, 0($sp)
+	addi $sp, $sp, 4
+	
 	j principal
 	
 fibonacci:
