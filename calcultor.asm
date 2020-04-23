@@ -114,9 +114,10 @@ subtracao:
 
 #-------------------------------------Multiplicação-------------------------------------	
 multiplicacao:
-	#Armazenando $v0 na pilha
-	addi $sp, $sp, -4
-	sw $v0, 0($sp)	
+	#Armazenando $v0 e $a0 na pilha
+	addi $sp, $sp, -8
+	sw $a0, 4($sp)
+	sw $v0, 0($sp)
 	
 	jal ler_entrada_dupla
 	move $t1, $v0
@@ -135,9 +136,10 @@ multiplicacao:
 	move $a0, $t0
 	syscall 
 	
-	#Retornando o valor de $v0
+	#Desempilhando $a0 e $v0
 	lw $v0, 0($sp)
-	addi $sp, $sp, 4
+	lw $a0, 4($sp)
+	addi $sp, $sp, 8
 			
 	j principal
 
@@ -147,23 +149,9 @@ divisao:
 	addi $sp, $sp, -4 
 	sw $a0, 0($sp)
 	
-	li $v0, 4 # codigo para imprimir string
-	la $a0, entrada_primeiro # imprime entrada_primeiro
-	syscall 
-	
-	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0
-	syscall
-	
-	move $t1, $v0 # transfere o valor de $v0 para $t1
-	
-	li $v0, 4 # codigo para imprimir string
-	la $a0, entrada_segundo # imprime entrada_segundo
-	syscall 
-	
-	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0 
-	syscall
-	
-	move $t2, $v0 # transfere o valor de $v0 para $t2
+	jal ler_entrada_dupla
+	move $t1, $v0
+	move $t2, $v1
 	
 	div $t3, $t1, $t2
 	
@@ -187,9 +175,10 @@ potencia:
 
 #-------------------------------------Raiz quadrada-------------------------------------
 raiz_quadrada:
-	#Armazenando $v0 na pilha
-	addi $sp, $sp, -4
-	sw $v0, 0($sp)	
+	#Armazenando $v0 e $a0 na pilha
+	addi $sp, $sp, -8
+	sw $a0, 4($sp)
+	sw $v0, 0($sp)
 	
 	jal ler_entrada_unica
 	move $t1, $v0
@@ -226,9 +215,10 @@ endloop_raiz_quadrada:
 	move $a0, $t0
 	syscall
 	 
-	#Retornando o valor de $v0
+	#Desempilhando $a0 e $v0
 	lw $v0, 0($sp)
-	addi $sp, $sp, 4
+	lw $a0, 4($sp)
+	addi $sp, $sp, 8
 		
 	j principal
 
@@ -237,14 +227,8 @@ tabuada:
 	addi $sp, $sp, -4 
 	sw $a0, 0($sp)
 	
-	li $v0, 4 # codigo para imprimir string
-	la $a0, entrada_unica # imprime entrada_unica
-	syscall 
-	
-	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0
-	syscall
-	
-	move $t1, $v0 # transfere o valor de $v0 para $t1
+	jal ler_entrada_unica
+	move $t1, $v0
 	
 	li $t2, 0 # carrega valor 0 para $t2
 	li $t4, 11 # carrega valor 11 para $t4	
@@ -300,8 +284,9 @@ imc:
 	
 #-------------------------------------Fatorial-------------------------------------
 fatorial:
-	#Armazenando $v0 na pilha
-	addi $sp, $sp, -4
+	#Armazenando $v0 e $a0 na pilha
+	addi $sp, $sp, -8
+	sw $a0, 4($sp)
 	sw $v0, 0($sp)	
 	
 	jal ler_entrada_unica
@@ -333,75 +318,26 @@ endloop_fatorial:
 	move $a0, $t0
 	syscall
 	
-	#Retornando o valor de $v0
+	#Desempilhando $a0 e $v0
 	lw $v0, 0($sp)
-	addi $sp, $sp, 4
+	lw $a0, 4($sp)
+	addi $sp, $sp, 8
 	
 	j principal
 
 #-------------------------------------Fibonacci-------------------------------------
 fibonacci:
-	# salva registradores na pilha
-	addi $sp, $sp, -4 
-	sw $a0, 0($sp)
-	
-	li $v0, 4 # codigo para imprimir string
-	la $a0, entrada_unica # imprime entrada_unica
-	syscall
-	
-	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0
-	syscall
-	
-	move $t0, $v0 # transfere o valor de $v0 para $t0
-	
-	li $t1, -1 # carrega -1 para $t1
-	li $t2, 0 # carrega 0 para $t2
-	li $t3, 1 # carrega 1 para $t3
-	
-	li $v0, 1
-	move $a0, $t2
-	syscall
-	
-	li $v0, 4
-	la $a0, espaco
-	syscall
-	
-	li $v0, 1
-	move $a0, $t3
-	syscall
-	
-	jal loop_fibonacci
-	
-	# desempilha registradores
-	lw $a0, 0($sp)
-	addi $sp, $sp, 4
 	j principal
-	
-loop_fibonacci:
-	beq $t0, $t1, fim_fibonacci
-	
-	add $t2, $t2, $t3
-	
-	li $v0, 1
-	move $a0, $t2
-	syscall
-	
-	li $v0, 4
-	la $a0, espaco
-	syscall
-	
-	lw $t3, 0($t2)
-	addi $t0, $t0, 1
-	jal loop_fibonacci
-	
-fim_fibonacci:
-	jr $ra
 
 #-------------------------------------Funções de leitura-------------------------------------	
 
 #Retorno do primeiro valor: $v0
 #Retorno do segundo valor: $v1
 ler_entrada_dupla:
+	#Empilhando $a0
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
+	
 	#Imprimindo texto da primeira entrada
 	li $v0, 4
 	la $a0, entrada_primeiro
@@ -426,10 +362,17 @@ ler_entrada_dupla:
 	move $v0, $t1
 	move $v1, $t2
 	
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	
 	jr $ra
 	
 #Retorno do valor: $v0
 ler_entrada_unica:
+	#Empilhando $a0
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
+	
 	#Imprimindo texto da primeira entrada
 	li $v0, 4
 	la $a0, entrada_unica
@@ -442,5 +385,9 @@ ler_entrada_unica:
 	
 	#Enviando como retorno do procedimento
 	move $v0, $t1
+	
+	#Desempilhando $a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 	
 	jr $ra
