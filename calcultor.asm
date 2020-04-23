@@ -116,6 +116,32 @@ subtracao:
 	j principal
 	
 multiplicacao:
+	#Armazenando $v0 na pilha
+	addi $sp, $sp, -4
+	sw $v0, 0($sp)	
+	
+	#Recebendo primeiro valor e armazenando em $t0
+	li $v0, 5
+	syscall
+	move $t0, $v0
+	 	
+	#Recebendo segundo valor e armazenando em $t1
+	li $v0, 5
+	syscall
+	move $t1, $v0
+
+	#Multiplicando
+	mul $t2, $t1, $t0
+	
+	#Imprimindo resultado
+	li $v0, 1
+	move $a0, $t2
+	syscall 
+	
+	#Retornando o valor de $v0
+	lw $v0, 0($sp)
+	addi $sp, $sp, 4
+			
 	j principal
 	
 divisao:
@@ -170,6 +196,18 @@ potencia:
 	j principal
 	
 raiz_quadrada:
+	#Recebendo segundo valor e armazenando em $t1
+	#li $v0, 5
+	#syscall
+	#move $t0, $v0
+	
+	#sqrt.d $t1, $t0 
+	
+	#Imprimindo resultado
+	#li $v0, 1
+	#move $a0, $12
+	#syscall 
+	
 	j principal
 	
 tabuada:
