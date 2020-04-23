@@ -1,7 +1,7 @@
 	.data
 #Isadora ok
 #Magrini ok
-#Marlon
+#Marlon ok
 
 	.text
 	.globl main
