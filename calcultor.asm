@@ -53,18 +53,3 @@ soma:
 	lw $t1, 0($sp)
 	
 	addi $sp, $sp, 16
-	
-divisao:
-
-tabuada:
-
-
-
-
-
-
-
-
-encerra_programa:
-	li $v0, 10
-	syscall
