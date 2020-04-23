@@ -81,28 +81,15 @@ encerrar:
 	li $v0, 10
 	syscall
 	
+#-------------------------------------Soma-------------------------------------	
 soma:
 	# salvando registradores na pilha
 	addi $sp, $sp, -4 
 	sw $a0, 0($sp)
 	
-	li $v0, 4 # codigo para imprimir string
-	la $a0, entrada_primeiro # imprime entrada_primeiro
-	syscall 
-	
-	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0
-	syscall
-	
-	move $t1, $v0 # transfere o valor de $v0 para $t1
-	
-	li $v0, 4 # codigo para imprimir string
-	la $a0, entrada_segundo # imprime entrada_segundo
-	syscall 
-	
-	li $v0, 5 # le um inteiro fornecido pelo usuario em $v0 
-	syscall
-	
-	move $t2, $v0 # transfere o valor de $v0 para $t2
+	jal ler_entrada_dupla
+	move $t1, $v0
+	move $t2, $v1
 	
 	add $t3, $t1, $t2
 	
@@ -120,34 +107,20 @@ soma:
 	addi $sp, $sp, 4
 	
 	j principal
-	
+
+#-------------------------------------Subtração-------------------------------------	
 subtracao:
 	j principal
-	
+
+#-------------------------------------Multiplicação-------------------------------------	
 multiplicacao:
 	#Armazenando $v0 na pilha
 	addi $sp, $sp, -4
 	sw $v0, 0($sp)	
 	
-	#Imprimindo texto auxiliar
-	li $v0, 4
-	la $a0, entrada_primeiro
-	syscall 
-	
-	#Recebendo primeiro valor e armazenando em $t1
-	li $v0, 5
-	syscall
+	jal ler_entrada_dupla
 	move $t1, $v0
-	
-	#Imprimindo texto auxiliar 	
-	li $v0, 4
-	la $a0, entrada_segundo
-	syscall 
-	
-	#Recebendo segundo valor e armazenando em $t2
-	li $v0, 5
-	syscall
-	move $t2, $v0
+	move $t2, $v1
 
 	#Multiplicando
 	mul $t0, $t1, $t2
@@ -167,7 +140,8 @@ multiplicacao:
 	addi $sp, $sp, 4
 			
 	j principal
-	
+
+#-------------------------------------Divisão-------------------------------------
 divisao:
 	# salvando registradores na pilha
 	addi $sp, $sp, -4 
@@ -210,22 +184,16 @@ divisao:
 	
 potencia:
 	j principal
-	
+
+#-------------------------------------Raiz quadrada-------------------------------------
 raiz_quadrada:
 	#Armazenando $v0 na pilha
 	addi $sp, $sp, -4
 	sw $v0, 0($sp)	
 	
-	#Imprimindo texto auxiliar
-	li $v0, 4
-	la $a0, entrada_unica
-	syscall 
-
-	#Recebendo o valor a ser calculado e armazenando em $t1
-	li $v0, 5
-	syscall
+	jal ler_entrada_unica
 	move $t1, $v0
-	
+		
 	#Calculo da raiz quadrada
 	li $t2, 1 #Armazenara o resultado
 	li $t0, 1 #Contador
@@ -263,7 +231,8 @@ endloop_raiz_quadrada:
 	addi $sp, $sp, 4
 		
 	j principal
-	
+
+#-------------------------------------Tabuada-------------------------------------
 tabuada:
 	addi $sp, $sp, -4 
 	sw $a0, 0($sp)
@@ -324,23 +293,18 @@ fim_tabuada:
 	addi $sp, $sp, 4
 	
 	j principal
-	
+
+#-------------------------------------IMC-------------------------------------
 imc:
 	j principal
 	
+#-------------------------------------Fatorial-------------------------------------
 fatorial:
 	#Armazenando $v0 na pilha
 	addi $sp, $sp, -4
 	sw $v0, 0($sp)	
 	
-	#Imprimindo texto auxiliar
-	li $v0, 4
-	la $a0, entrada_unica
-	syscall 
-
-	#Recebendo o valor a ser calculado e armazenando em $t1
-	li $v0, 5
-	syscall
+	jal ler_entrada_unica
 	move $t1, $v0
 	
 	#Será o acumulador do resultado
@@ -374,7 +338,8 @@ endloop_fatorial:
 	addi $sp, $sp, 4
 	
 	j principal
-	
+
+#-------------------------------------Fibonacci-------------------------------------
 fibonacci:
 	# salva registradores na pilha
 	addi $sp, $sp, -4 
@@ -430,4 +395,52 @@ loop_fibonacci:
 	jal loop_fibonacci
 	
 fim_fibonacci:
+	jr $ra
+
+#-------------------------------------Funções de leitura-------------------------------------	
+
+#Retorno do primeiro valor: $v0
+#Retorno do segundo valor: $v1
+ler_entrada_dupla:
+	#Imprimindo texto da primeira entrada
+	li $v0, 4
+	la $a0, entrada_primeiro
+	syscall 
+	
+	#Recebendo primeiro valor e armazenando em $t1
+	li $v0, 5
+	syscall
+	move $t1, $v0
+	
+	#Imprimindo texto da segunda entrada
+	li $v0, 4
+	la $a0, entrada_segundo
+	syscall 
+	
+	#Recebendo segundo valor e armazenando em $t2
+	li $v0, 5
+	syscall
+	move $t2, $v0
+	
+	#Enviando como retorno do procedimento
+	move $v0, $t1
+	move $v1, $t2
+	
+	jr $ra
+	
+#Retorno do valor: $v0
+ler_entrada_unica:
+	#Imprimindo texto da primeira entrada
+	li $v0, 4
+	la $a0, entrada_unica
+	syscall 
+	
+	#Recebendo o valor e armazenando em $t1
+	li $v0, 5
+	syscall
+	move $t1, $v0
+	
+	#Enviando como retorno do procedimento
+	move $v0, $t1
+	
 	jr $ra
