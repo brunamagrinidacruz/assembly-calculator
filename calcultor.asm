@@ -228,6 +228,7 @@ divisao:
 	
 	j principal
 	
+#-------------------------------------Potência-------------------------------------
 potencia:
 	#Lendo entrada
 	jal ler_entrada_dupla
