@@ -57,23 +57,14 @@ principal:
 	
 	#Chamando a operação
 	beq $v0, 1, soma
-	
 	beq $v0, 2, subtracao
-	
 	beq $v0, 3, multiplicacao
-	
 	beq $v0, 4, divisao
-	
 	beq $v0, 5, potencia
-	
 	beq $v0, 6, raiz_quadrada
-	
 	beq $v0, 7, tabuada
-	
 	beq $v0, 8, imc
-	
 	beq $v0, 9, fatorial
-
 	beq $v0, 10, fibonacci
 	
 #Se $v0 não for igual a nenhum dos valores, a aplicação será encerrada	
