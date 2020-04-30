@@ -67,23 +67,14 @@ principal:
 	
 	#Chamando a opera√ß√£o
 	beq $v0, 1, soma
-	
 	beq $v0, 2, subtracao
-	
 	beq $v0, 3, multiplicacao
-	
 	beq $v0, 4, divisao
-	
 	beq $v0, 5, potencia
-	
 	beq $v0, 6, raiz_quadrada
-	
 	beq $v0, 7, tabuada
-	
 	beq $v0, 8, imc
-	
 	beq $v0, 9, fatorial
-
 	beq $v0, 10, fibonacci
 	
 #Se $v0 n√£o for igual a nenhum dos valores, a aplica√ß√£o ser√° encerrada	
@@ -99,22 +90,22 @@ soma:
 	
 	#Lendo entrada
 	jal ler_entrada_dupla
-	move $t1, $v0
-	move $t2, $v1
+	move $s1, $v0
+	move $s2, $v1
 	
 	#Validando a entrada se e menor que 32bit
-	move $a0, $t1
+	move $a0, $s1
 	jal validar_entrada_32bits
 	move $t3, $v0
 	beq $t3, $zero, principal
 	
-	move $a0, $t2
+	move $a0, $s2
 	jal validar_entrada_32bits
 	move $t3, $v0
 	beq $t3, $zero, principal
 	
 	#Somando
-	add $t3, $t1, $t2
+	add $t3, $s1, $s2
 	
 	#Imprimindo saida_resultado
 	li $v0, 4
@@ -671,34 +662,30 @@ ler_entrada_unica:
 	jr $ra
 
 validar_entrada_32bits:
-	#possÌvel maior inteiro de 32 bits = 2147483647
-	li $v0, 4
-	la $a0, menu_inicio
-	syscall
-	
+	#possÔøΩvel maior inteiro de 32 bits = 2147483647
 	move $t0, $a0
 	addi $t1, $zero, 214748364
 	
-	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent„o... 
+	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro entÔøΩo... 
 	j validar_erro
 
 validar_entrada_16bits:
-	#possÌvel maior inteiro de 16 bits = 65535
+	#possÔøΩvel maior inteiro de 16 bits = 65535
 	move $t0, $a0
 	addi $t1, $zero, 65535
 	
-	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent„o... 
+	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro entÔøΩo... 
 	
 validar_erro:
-	move $v0, $zero
-	
-	li $v1, 4
+	#Imprimindo que a entrada e invalida
+	li $v0, 4
 	la $a0, entrada_invalida
 	syscall
 	
+	#Retornando para o procedimento
+	move $v0, $zero
 	jr $ra
 					
 validar_sucesso:
 	addi $v0, $zero, 1
-
 	jr $ra
