@@ -12,6 +12,7 @@ menu_operacoes: .asciiz "1 - Soma\n2 - Subtracao\n3 - Multiplica√ß√£o\n4 - Divis
 entrada_primeiro: .asciiz "Digite o primeiro valor: "
 entrada_segundo: .asciiz "Digite o segundo valor: "
 entrada_unica: .asciiz "Digite o valor: "
+entrada_invalida: .asciiz "Entrada invalida.\n"
 
 #Saida
 saida_resultado: .asciiz "Resultado: "
@@ -84,13 +85,24 @@ encerrar:
 #-------------------------------------Soma-------------------------------------	
 soma:
 	#Empilhando $a0
-	addi $sp, $sp, -4 
+	addi $sp, $sp, -4
 	sw $a0, 0($sp)
 	
 	#Lendo entrada
 	jal ler_entrada_dupla
 	move $t1, $v0
 	move $t2, $v1
+	
+	#Validando a entrada se e menor que 32bit
+	move $a0, $t1
+	jal validar_entrada_32bits
+	move $t3, $v0
+	beq $t3, $zero, principal
+	
+	move $a0, $t2
+	jal validar_entrada_32bits
+	move $t3, $v0
+	beq $t3, $zero, principal
 	
 	#Somando
 	add $t3, $t1, $t2
@@ -109,10 +121,16 @@ soma:
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
 	
+#	addi $v0, $zero, 1	#soma sucesso
+	
 	j principal
 
 #-------------------------------------Subtra√ß√£o-------------------------------------	
 subtracao:
+	#Empilhando $a0
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+
 	#Lendo entrada
 	jal ler_entrada_dupla
 	move $t0, $v0
@@ -133,6 +151,10 @@ subtracao:
 	li $v0, 4
 	la $a0, pula_linha
 	syscall
+
+	#Desempilhando a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 
 	j principal
 
@@ -639,3 +661,37 @@ ler_entrada_unica:
 	addi $sp, $sp, 4
 	
 	jr $ra
+
+validar_entrada_32bits:
+	#possÌvel maior inteiro de 32 bits = 2147483647
+	li $v0, 4
+	la $a0, menu_inicio
+	syscall
+	
+	move $t0, $a0
+	addi $t1, $zero, 214748364
+	
+	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent„o... 
+	j validar_erro
+
+validar_entrada_16bits:
+	#possÌvel maior inteiro de 16 bits = 65535
+	move $t0, $a0
+	addi $t1, $zero, 65535
+	
+	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent„o... 
+	
+validar_erro:
+	move $v0, $zero
+	
+	li $v1, 4
+	la $a0, entrada_invalida
+	syscall
+	
+	jr $ra
+					
+validar_sucesso:
+	addi $v0, $zero, 1
+
+	jr $ra
+	
