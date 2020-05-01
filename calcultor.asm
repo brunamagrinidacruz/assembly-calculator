@@ -164,6 +164,15 @@ multiplicacao:
 	jal ler_entrada_dupla
 	move $a1, $v0
 	move $a2, $v1
+	
+	#Validando se entradas sao menor ou igual maior inteiro de 16 bits
+	move $a0, $a1
+	jal validar_entrada_16bits
+	beq $v0, $zero, principal
+
+	move $a0, $a2
+	jal validar_entrada_16bits
+	beq $v0, $zero, principal
 
 	#Multiplicando
 	mul $t0, $a1, $a2
@@ -199,7 +208,7 @@ divisao:
 	move $a0, $a1
 	jal validar_entrada_16bits
 	beq $v0, $zero, principal
-	
+
 	move $a0, $a2
 	jal validar_entrada_16bits
 	beq $v0, $zero, principal
@@ -220,7 +229,7 @@ divisao:
 	li $v0, 1 
 	move $a0, $t3 
 	syscall
-	
+
 	#Desempilhando a0
 	lw $a0, 0($sp)
 	addi $sp, $sp, 4
@@ -256,7 +265,7 @@ potencia:
 	beq $v0, $zero, principal
 	
 	move $a0, $a2
-	jal validar_entrada_expoente_zero_potencia
+	jal validar_entrada_zero_potencia_fatorial
 	beq $v0, $zero, principal
 	
 	addi $t4, $zero, 1	#referencial para a parada do potencia_loop
@@ -587,7 +596,15 @@ fatorial:
 	sw $v0, 0($sp)	
 	
 	jal ler_entrada_unica
-	move $t1, $v0
+	move $a1, $v0
+	
+	move $a0, $a1
+	jal validar_entrada_negativa
+	beq $v0, $zero, principal
+	
+	move $a0, $a1
+	jal validar_entrada_zero_potencia_fatorial
+	beq $v0, $zero, principal
 	
 	#Será o acumulador do resultado
 	addi $t0, $zero, 1
@@ -596,12 +613,12 @@ fatorial:
 
 loop_fatorial:			
 	#Se a quantidade de multiplicacoes (numero do fatorial) for menor ou igual a 1, encerra
-	ble $t1, $t2, endloop_fatorial
+	ble $a1, $t2, endloop_fatorial
 
 	#Calculando o novo fatorial
-	mul $t0, $t0, $t1	
+	mul $t0, $t0, $a1	
 	#Decrementando o contador
-        addi $t1, $t1, -1	
+        addi $a1, $a1, -1	
    	j loop_fatorial
 	
 endloop_fatorial:
@@ -629,9 +646,9 @@ fibonacci:
 	sw $a0, 0($sp)
 		
 	jal ler_entrada_unica
-	move $t0, $v0
+	move $a1, $v0
 	
-	move $a0, $t0
+	move $a0, $a1
 	beq $a0, $zero, imprimir_espaco
 	
 	jal validar_entrada_negativa
@@ -671,7 +688,7 @@ fibonacci:
 	
 loop_fibonacci:
 	#Se o contador for igual a entrada do usuário, encerra
-	beq $t0, $t1, fim_fibonacci
+	beq $a1, $t1, fim_fibonacci
 
 	#Faz o cálculo do Fibonacci
 	add $t4, $t2, $t3
@@ -770,7 +787,7 @@ validar_entrada_zero:
 	beq $a0, $zero, validar_erro
 	j validar_sucesso
 
-validar_entrada_expoente_zero_potencia:
+validar_entrada_zero_potencia_fatorial:
 	beq $a0, $zero, imprimir_um
 	j validar_sucesso
 
@@ -782,11 +799,10 @@ validar_entrada_32bits:
 	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent�o... 
 	j validar_erro
 
-
 validar_entrada_16bits:
 	#possivel maior inteiro de 16 bits = 65535
 	move $t0, $a0
-	addi $t1, $zero, 65536
+	addi $t1, $zero, 65536	#46340 
 	
 	blt $t0, $t1, validar_sucesso	#se entrada < 65535 entao... 
 	j validar_erro
