@@ -12,7 +12,7 @@ menu_operacoes: .asciiz "1 - Soma\n2 - Subtracao\n3 - Multiplicação\n4 - Divis
 entrada_primeiro: .asciiz "Digite o primeiro valor: "
 entrada_segundo: .asciiz "Digite o segundo valor: "
 entrada_unica: .asciiz "Digite o valor: "
-entrada_invalida: .asciiz "Entrada invalida.\n"
+entrada_invalida: .asciiz "Entrada invalida."
 
 #Saida
 saida_resultado: .asciiz "Resultado: "
@@ -76,6 +76,10 @@ principal:
 	beq $v0, 8, imc
 	beq $v0, 9, fatorial
 	beq $v0, 10, fibonacci
+	beq $v0, 0, encerrar
+	
+	jal validar_erro
+	j principal
 	
 #Se $v0 não for igual a nenhum dos valores, a aplicação será encerrada	
 encerrar:
@@ -90,22 +94,11 @@ soma:
 	
 	#Lendo entrada
 	jal ler_entrada_dupla
-	move $s1, $v0
-	move $s2, $v1
-	
-	#Validando a entrada se e menor que 32bit
-	move $a0, $s1
-	jal validar_entrada_32bits
-	move $t3, $v0
-	beq $t3, $zero, principal
-	
-	move $a0, $s2
-	jal validar_entrada_32bits
-	move $t3, $v0
-	beq $t3, $zero, principal
-	
+	move $a1, $v0
+	move $a2, $v1
+		
 	#Somando
-	add $t3, $s1, $s2
+	add $t3, $a1, $a2
 	
 	#Imprimindo saida_resultado
 	li $v0, 4
@@ -197,11 +190,15 @@ divisao:
 	
 	#Lendo entrada
 	jal ler_entrada_dupla
-	move $t1, $v0
-	move $t2, $v1
+	move $a1, $v0
+	move $a2, $v1
+	
+	move $a0, $t2
+	jal validar_entrada_zero
+	beq $v0, $zero, principal
 	
 	#Dividindo
-	div $t3, $t1, $t2
+	div $t3, $a1, $a2
 	
 	#Imprimindo saida_resultado
 	li $v0, 4 
@@ -223,18 +220,26 @@ divisao:
 potencia:
 	#Lendo entrada
 	jal ler_entrada_dupla
-	move $t0, $v0
-	move $t1, $v1
+	move $a1, $v0
+	move $a2, $v1
+	
+	move $a0, $a2
+	jal validar_entrada_negativa
+	beq $v0, $zero, principal
+	
+	move $a0, $a2
+	jal validar_entrada_expoente_zero_potencia
+	beq $v0, $zero, principal
 	
 	addi $t4, $zero, 1	#referencial para a parada do potencia_loop
-	add $t3, $zero, $t0	#armazenando o valor de entrada para fazer a multiplicacao da potencia
+	add $t3, $zero, $a1	#armazenando o valor de entrada para fazer a multiplicacao da potencia
 
 #loop para fazer a multiplicacao da potencia	
 potencia_loop:
-	ble $t1, $t4, potencia_endloop	#verifica se ja chegou no final da potenciacao
+	ble $a2, $t4, potencia_endloop	#verifica se ja chegou no final da potenciacao
 	
-	mul $t0, $t0, $t3	#valor = valor * valor_inicial
-	addi $t1, $t1, -1	#contador = contador - 1
+	mul $a1, $a1, $t3	#valor = valor * valor_inicial
+	addi $a2, $a2, -1	#contador = contador - 1
 	j potencia_loop
 
 potencia_endloop:
@@ -243,15 +248,11 @@ potencia_endloop:
 	syscall
 	
 	li $v0, 1
-	move $a0, $t0
+	move $a0, $a1
 	syscall
 	
-	li $v0, 4
-	la $a0, pula_linha
-	syscall
-
 	j principal
-
+	
 #-------------------------------------Raiz quadrada-------------------------------------
 raiz_quadrada:
 	#Armazenando $v0 e $a0 na pilha
@@ -260,7 +261,11 @@ raiz_quadrada:
 	sw $v0, 0($sp)
 	
 	jal ler_entrada_unica
-	move $t1, $v0
+	move $a1, $v0
+	
+	move $a0, $a1
+	jal validar_entrada_negativa
+	beq $v0, $zero, principal
 		
 	#Calculo da raiz quadrada
 	li $t2, 1 #Armazenara o resultado
@@ -268,9 +273,9 @@ raiz_quadrada:
 	
 loop_raiz_quadrada:
 	#Se $t2 (armazenador do resultado) for igual ao valor de entrada, finaliza
-	beq $t1, $t2, endloop_raiz_quadrada
+	beq $a1, $t2, endloop_raiz_quadrada
 	#Se $t2 (armazenador do resultado) for maior que o valor de entrada, o resultado deve ser o $t3 anterior
-	bgt $t2, $t1, endloop_raiz_quadrada_ultrapassou
+	bgt $t2, $a1, endloop_raiz_quadrada_ultrapassou
 
 	#Incrementando o contador	
 	addi $t0, $t0, 1
@@ -367,15 +372,23 @@ fim_tabuada:
 imc:
 	#Lendo entrada
 	jal ler_entrada_dupla
-	move $t0, $v0
-	move $t1, $v1
+	move $a1, $v0
+	move $a2, $v1
+	
+	move $a0, $a1
+	jal validar_entrada_negativa
+	beq $v0, $zero, principal
+	
+	move $a0, $a2
+	jal validar_entrada_negativa
+	beq $v0, $zero, principal
 	
 	#Efetuando a operanção para obter o imc
-	mul $t1, $t1, $t1 	#altura * altura
-	div $t2, $t0, $t1	#resultado = peso / (altura * altura)
+	mul $a2, $a2, $a2 	#altura * altura
+	div $t2, $a1, $a2	#resultado = peso / (altura * altura)
 	
 	blt $t2, 17, imc_primeiro_caso	#se resultado < 17 entao imc_primeiro_caso
-	blt $t2, 19, imc_segundo_caso
+	blt $t2, 18, imc_segundo_caso
 	blt $t2, 25, imc_terceiro_caso
 	blt $t2, 30, imc_quarto_caso
 	blt $t2, 35, imc_quinto_caso
@@ -617,7 +630,7 @@ ler_entrada_dupla:
 	li $v0, 5
 	syscall
 	move $t1, $v0
-	
+
 	#Imprimindo texto da segunda entrada
 	li $v0, 4
 	la $a0, entrada_segundo
@@ -662,10 +675,25 @@ ler_entrada_unica:
 	
 	jr $ra
 
+#-------------------------------------Funções de validação-------------------------------------	
+validar_entrada_negativa:
+	#Se entrada for maior ou igual a zero, sucesso
+	bge $a0, $zero, validar_sucesso
+	j validar_erro
+	
+validar_entrada_zero:
+	#Se a entrada for igual a zero, falha
+	beq $a0, $zero, validar_erro
+	j validar_sucesso
+
+validar_entrada_expoente_zero_potencia:
+	beq $a0, $zero, imprimir_um
+	j validar_sucesso
+
 validar_entrada_32bits:
 	#poss�vel maior inteiro de 32 bits = 2147483647
 	move $t0, $a0
-	addi $t1, $zero, 214748364
+	addi $t1, $zero, 2147483647
 	
 	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent�o... 
 	j validar_erro
@@ -676,18 +704,54 @@ validar_entrada_16bits:
 	addi $t1, $zero, 65535
 	
 	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent�o... 
+	j validar_erro
 	
+####
+
+
+imprimir_um:	
+	#Empilhando valor de $a0
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
+	
+	#Imprimindo saida_resultado
+	li $v0, 4
+	la $a0, saida_resultado 
+	syscall 
+		
+	#Imprimindo o valor 1
+	li $v0, 1
+	li $a0, 1
+	syscall
+
+	#Desempilhando o valor de $a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	
+	#Retornando 0 para o procedimento em caso de falha (false)
+	move $v0, $zero
+	jr $ra
+		
 validar_erro:
+	#Empilhando valor de $a0
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
+	
 	#Imprimindo que a entrada e invalida
 	li $v0, 4
 	la $a0, entrada_invalida
 	syscall
 	
-	#Retornando para o procedimento
+	#Desempilhando o valor de $a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	
+	#Retornando 0 para o procedimento em caso de falha (false)
 	move $v0, $zero
 	jr $ra
 					
 validar_sucesso:
+	#Retornando 1 para o procedimento em casa de sucesso (true)
 	addi $v0, $zero, 1
 	jr $ra
 	

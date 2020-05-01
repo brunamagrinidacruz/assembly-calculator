@@ -1,0 +1,121 @@
+#Em caso de qualquer entrada não inteira:
+Saida: Runtime exception at [endereço]: invalid integer input (syscall 5)
+
+----------------Menu---------------
+#Entrada válida de menu
+Saida: Realiza a operação selecionada
+
+#Entrada inválida de menu
+Saída: Entrada inválida.
+
+---------------Divisão-------------
+#Com resto 0
+25 5
+Saida: 5
+
+#Com resto (imprime apenas a parte inteira)
+10 3
+Saida: 3
+
+#Com 0 no numerador
+0 42
+Saida: 0
+
+#Com 0 no denominador
+42 0 
+Saida: Entrada inválida.
+
+---------------Potência------------
+#Com base positiva e expoente positivo
+2 4
+Saida: 16
+
+#Com base negativa e expoente impar positivo 
+-3 3
+Saida: -27
+
+#Com base negativa e expoente par positivo
+-5 2
+Saida: 25
+
+#Com base positiva expoente negativo 
+5 -2
+Saida: Entrada inválida.
+
+#Com expoente 0
+100 0
+Saida: 1
+
+------------Raiz Quadrada-------------
+#Entrada positiva com resultado inteiro
+36
+Saida: 6
+
+#Entrada positiva com resultado de número com ponto flutuante (imprime apenas a parte inteira)
+26
+Saida: 5
+
+#Entrada negativa
+-42
+Saida: Entrada inválida.
+
+#Entrada zero
+0
+Saida: 0 
+
+--------------Tabuada----------------
+#Entrada positiva
+9
+Saida: 
+9 * 0 = 0
+9 * 1 = 9
+9 * 2 = 18
+9 * 3 = 27
+9 * 4 = 36
+9 * 5 = 45
+9 * 6 = 54
+9 * 7 = 63
+9 * 8 =72
+9 * 9 = 81
+9 * 10 = 90
+
+#Entrada negativa
+-5
+Saida:
+-5 * 0 = 0 
+-5 * 1 = -5
+-5 * 2 = -10
+-5 * 3 = -15
+-5 * 4 = -20
+-5 * 5 = -25
+-5 * 6 = -30
+-5 * 7 = -35
+-5 * 8 = -40
+-5 * 9 = -45
+-5 * 10 = -50
+
+#Entrada 0
+0
+Saida:
+0 * 0 = 0
+0 * 1 = 0
+0 * 2 = 0
+0 * 3 = 0
+0 * 4 = 0
+0 * 5 = 0
+0 * 6 = 0
+0 * 7 = 0
+0 * 8 = 0
+0 * 9 = 0
+0 * 10 = 0
+
+-----------------IMC----------------
+A entrada do IMC é apenas valores inteiros. 
+No caso da altura, a entrada deve ser em metros. Exemplo: 1 ou 2
+No caso do peso, a entrada deve ser em kg. Exemplo: 40 ou 50
+
+#Entrada positiva
+2 40
+Saida: 0 => Muito abaixo do peso
+ 
+#Entrada negativa
