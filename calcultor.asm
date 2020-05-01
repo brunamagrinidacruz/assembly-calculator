@@ -386,8 +386,10 @@ endloop_raiz_quadrada:
 #-------------------------------------Tabuada-------------------------------------
 tabuada:
 	#Empilhando a0
-	addi $sp, $sp, -4 
-	sw $a0, 0($sp)
+	addi $sp, $sp, -8 
+	sw $a0, 4($sp)
+	sw $v0, 0($sp)
+	
 	
 	#Lendo entrada
 	jal ler_entrada_unica
@@ -440,16 +442,20 @@ loop_tabuada:
 	
 fim_tabuada:
 	#Desempilhando a0
-	lw $a0, 0($sp)
-	addi $sp, $sp, 4
+	lw $a0, 4($sp)
+	lw $v0, 0($sp)
+	addi $sp, $sp, 8
 	
 	j principal
 
 #-------------------------------------IMC-------------------------------------
 imc:
-	#Empilhando a0
-	addi $sp, $sp, -4 
+	#Empilhando 
+	addi $sp, $sp, -16 
 	sw $a0, 0($sp)
+	sw $v0, 4($sp)
+	sw $a1, 8($sp)
+	sw $a2, 12($sp)
 
 	#Lendo entrada
 	li $v0, 4
@@ -504,11 +510,7 @@ imc_setimo_caso:
 	la $a0, imc_str_setimo_caso
 	syscall
 
-	#Desempilhando a0
-	lw $a0, 0($sp)
-	addi $sp, $sp, 4
-	
-	j principal
+	j imc_fim
 		
 imc_primeiro_caso: 
 	li $v0, 4
@@ -523,11 +525,7 @@ imc_primeiro_caso:
 	la $a0, imc_str_primeiro_caso
 	syscall
 	
-	#Desempilhando a0
-	lw $a0, 0($sp)
-	addi $sp, $sp, 4
-
-	j principal
+	j imc_fim
 
 imc_segundo_caso: 
 	li $v0, 4
@@ -542,11 +540,7 @@ imc_segundo_caso:
 	la $a0, imc_str_segundo_caso
 	syscall
 	
-	#Desempilhando a0
-	lw $a0, 0($sp)
-	addi $sp, $sp, 4
-
-	j principal
+	j imc_fim
 		
 imc_terceiro_caso: 
 	li $v0, 4
@@ -561,11 +555,7 @@ imc_terceiro_caso:
 	la $a0, imc_str_terceiro_caso
 	syscall
 	
-	#Desempilhando a0
-	lw $a0, 0($sp)
-	addi $sp, $sp, 4
-
-	j principal
+	j imc_fim
 	
 imc_quarto_caso: 
 	li $v0, 4
@@ -580,11 +570,7 @@ imc_quarto_caso:
 	la $a0, imc_str_quarto_caso
 	syscall
 	
-	#Desempilhando a0
-	lw $a0, 0($sp)
-	addi $sp, $sp, 4
-
-	j principal
+	j imc_fim
 	
 imc_quinto_caso: 
 	li $v0, 4
@@ -599,11 +585,7 @@ imc_quinto_caso:
 	la $a0, imc_str_quinto_caso
 	syscall
 	
-	#Desempilhando a0
-	lw $a0, 0($sp)
-	addi $sp, $sp, 4
-
-	j principal
+	j imc_fim
 	
 imc_sexto_caso: 
 	li $v0, 4
@@ -618,18 +600,23 @@ imc_sexto_caso:
 	la $a0, imc_str_sexto_caso
 	syscall
 	
-	#Desempilhando a0
+imc_fim:
+	#Desempilhando
 	lw $a0, 0($sp)
-	addi $sp, $sp, 4
+	lw $v0, 4($sp)
+	lw $a1, 8($sp)
+	lw $a2, 12($sp)
+	addi $sp, $sp, 16
 
 	j principal
 
 #-------------------------------------Fatorial-------------------------------------
 fatorial:
-	#Armazenando $v0 e $a0 na pilha
-	addi $sp, $sp, -8
+	#Armazenando na pilha
+	addi $sp, $sp, -12
 	sw $a0, 4($sp)
 	sw $v0, 0($sp)	
+	sw $a1, 8($sp)
 	
 	jal ler_entrada_unica
 	move $a1, $v0
@@ -668,18 +655,21 @@ endloop_fatorial:
 	move $a0, $t0
 	syscall
 	
-	#Desempilhando $a0 e $v0
+	#Desempilhando
 	lw $v0, 0($sp)
 	lw $a0, 4($sp)
-	addi $sp, $sp, 8
+	lw $a1, 8($sp)
+	addi $sp, $sp, 12
 	
 	j principal
 
 #-------------------------------------Fibonacci-------------------------------------
 fibonacci:
 	# salva registradores na pilha
-	addi $sp, $sp, -4 
+	addi $sp, $sp, -12 
 	sw $a0, 0($sp)
+	sw $v0, 4($sp)
+	sw $a1, 8($sp)
 		
 	jal ler_entrada_unica
 	move $a1, $v0
@@ -719,7 +709,9 @@ fibonacci:
 	
 	# desempilha registradores
 	lw $a0, 0($sp)
-	addi $sp, $sp, 4
+	lw $v0, 4($sp)
+	lw $a1, 8($sp)
+	addi $sp, $sp, 12
 	j principal
 	
 loop_fibonacci:
