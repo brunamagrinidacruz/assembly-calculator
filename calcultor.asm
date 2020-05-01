@@ -216,7 +216,6 @@ divisao:
 	
 	j principal
 	
-#-------------------------------------Potência-------------------------------------
 potencia:
 	#Lendo entrada
 	jal ler_entrada_dupla
@@ -691,7 +690,7 @@ validar_entrada_expoente_zero_potencia:
 	j validar_sucesso
 
 validar_entrada_32bits:
-	#poss�vel maior inteiro de 32 bits = 2147483647
+	#possivel maior inteiro de 32 bits = 2147483647
 	move $t0, $a0
 	addi $t1, $zero, 2147483647
 	
@@ -699,7 +698,7 @@ validar_entrada_32bits:
 	j validar_erro
 
 validar_entrada_16bits:
-	#poss�vel maior inteiro de 16 bits = 65535
+	#possivel maior inteiro de 16 bits = 65535
 	move $t0, $a0
 	addi $t1, $zero, 65535
 	
@@ -707,7 +706,6 @@ validar_entrada_16bits:
 	j validar_erro
 	
 ####
-
 
 imprimir_um:	
 	#Empilhando valor de $a0
@@ -754,4 +752,3 @@ validar_sucesso:
 	#Retornando 1 para o procedimento em casa de sucesso (true)
 	addi $v0, $zero, 1
 	jr $ra
-	
