@@ -46,6 +46,10 @@ Saida: 50
 4 0
 Saida: 0
 
+#Com entrada maior que 16 bits (maior que o número 65535)
+65536 42
+Saida: Entrada invalida.
+
 ---------------Divisão-------------
 #Com resto 0
 25 5
