@@ -18,7 +18,7 @@ Saida: 9
 -10 -8
 Saida: -18
 
--------------Subtra��o-----------
+-------------Subtra��o-----------
 
 #Entradas positivas
 10 5
@@ -61,6 +61,14 @@ Saida: 0
 
 #Com 0 no denominador
 42 0 
+Saida: Entrada inválida.
+
+#Com numerador maior que 16 bits (maior que o número 65535)
+65536 4
+Saida: Entrada inválida.
+
+#Com denominador maior que 16 bits (maior que o número 65535)
+42 70000
 Saida: Entrada inválida.
 
 ---------------Potência------------
@@ -153,10 +161,11 @@ No caso da altura, a entrada deve ser em metros. Exemplo: 1 ou 2
 No caso do peso, a entrada deve ser em kg. Exemplo: 40 ou 50
 
 #Entrada positiva
-2 40
-Saida: 0 => Muito abaixo do peso
+Entrada: 2 40
+Saida: 10 => Muito abaixo do peso
  
 #Entrada negativa
+
 
 
 --------------Fibonacci-------------
@@ -167,7 +176,17 @@ Saida: 0 1 1 2
 
 #Entradas negativa
 -10
-Saida: Entrada inv�lida.
+Saida: Entrada inv�lida.
 
 #Entrada zero
 Saida: 
+
+Entrada: -20 2
+Saida: Entrada invalida.
+
+Entrada: -30 -2
+Saida: Entrada invalida.
+
+Entrada: 50  -2
+Saida: Entrada invalida.
+
