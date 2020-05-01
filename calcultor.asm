@@ -91,10 +91,14 @@ encerrar:
 	
 #-------------------------------------Soma-------------------------------------	
 soma:
-	#Empilhando $a0
-	addi $sp, $sp, -4
+	#Empilhando 
+	addi $sp, $sp, -20
+	sw $v1, 16($sp)
+	sw $v0, 12($sp)
+	sw $a2, 8($sp)
+	sw $a1, 4($sp)
 	sw $a0, 0($sp)
-	
+
 	#Lendo entrada
 	jal ler_entrada_dupla
 	move $a1, $v0
@@ -113,9 +117,13 @@ soma:
 	move $a0, $t3 
 	syscall
 	
-	#Desempilhando a0
+	#Desempilhando
 	lw $a0, 0($sp)
-	addi $sp, $sp, 4
+	lw $a1, 4($sp)
+	lw $a2, 8($sp)
+	lw $v0, 12($sp)
+	lw $v1, 16($sp)
+	addi $sp, $sp, 20
 	
 #	addi $v0, $zero, 1	#soma sucesso
 	
@@ -123,8 +131,11 @@ soma:
 
 #-------------------------------------Subtração-------------------------------------	
 subtracao:
-	#Empilhando $a0
-	addi $sp, $sp, -4
+	#Empilhando 
+	addi $sp, $sp, -16
+	sw $v1, 12($sp)
+	sw $v0, 8($sp)
+	sw $a1, 4($sp)
 	sw $a0, 0($sp)
 
 	#Lendo entrada
@@ -148,18 +159,24 @@ subtracao:
 	la $a0, pula_linha
 	syscall
 
-	#Desempilhando a0
+	#Desempilhando
 	lw $a0, 0($sp)
-	addi $sp, $sp, 4
+	lw $a1, 4($sp)
+	lw $v0, 8($sp)
+	lw $v1, 12($sp)
+	addi $sp, $sp, 16
 
 	j principal
 
 #-------------------------------------Multiplicação-------------------------------------	
 multiplicacao:
-	#Armazenando $v0 e $a0 na pilha
-	addi $sp, $sp, -8
-	sw $a0, 4($sp)
-	sw $v0, 0($sp)
+	#Empilhando 
+	addi $sp, $sp, -20
+	sw $v1, 16($sp)
+	sw $v0, 12($sp)
+	sw $a2, 8($sp)
+	sw $a1, 4($sp)
+	sw $a0, 0($sp)
 	
 	jal ler_entrada_dupla
 	move $a1, $v0
@@ -187,10 +204,13 @@ multiplicacao:
 	move $a0, $t0
 	syscall 
 	
-	#Desempilhando $a0 e $v0
-	lw $v0, 0($sp)
-	lw $a0, 4($sp)
-	addi $sp, $sp, 8
+	#Desempilhando
+	lw $a0, 0($sp)
+	lw $a1, 4($sp)
+	lw $a2, 8($sp)
+	lw $v0, 12($sp)
+	lw $v1, 16($sp)
+	addi $sp, $sp, 20
 			
 	j principal
 
