@@ -25,6 +25,14 @@ Saida: 0
 42 0 
 Saida: Entrada inválida.
 
+#Com numerador maior que 16 bits (maior que o número 65535)
+65536 4
+Saida: Entrada inválida.
+
+#Com denominador maior que 16 bits (maior que o número 65535)
+42 70000
+Saida: Entrada inválida.
+
 ---------------Potência------------
 #Com base positiva e expoente positivo
 2 4

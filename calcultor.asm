@@ -196,6 +196,14 @@ divisao:
 	move $a1, $v0
 	move $a2, $v1
 	
+	move $a0, $a1
+	jal validar_entrada_16bits
+	beq $v0, $zero, principal
+	
+	move $a0, $a2
+	jal validar_entrada_16bits
+	beq $v0, $zero, principal
+	
 	move $a0, $t2
 	jal validar_entrada_zero
 	beq $v0, $zero, principal
@@ -760,20 +768,12 @@ validar_entrada_expoente_zero_potencia:
 	beq $a0, $zero, imprimir_um
 	j validar_sucesso
 
-validar_entrada_32bits:
-	#possivel maior inteiro de 32 bits = 2147483647
-	move $t0, $a0
-	addi $t1, $zero, 2147483647
-	
-	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent�o... 
-	j validar_erro
-
 validar_entrada_16bits:
 	#possivel maior inteiro de 16 bits = 65535
 	move $t0, $a0
-	addi $t1, $zero, 65535
+	addi $t1, $zero, 65536
 	
-	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent�o... 
+	blt $t0, $t1, validar_sucesso	#se entrada < 65535 entao... 
 	j validar_erro
 	
 ####
