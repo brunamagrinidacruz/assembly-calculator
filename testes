@@ -8,6 +8,44 @@ Saida: Realiza a operação selecionada
 #Entrada inválida de menu
 Saída: Entrada inválida.
 
+---------------Soma-------------
+
+#Entradas positivas
+4 5
+Saida: 9
+
+#Entradas negativas
+-10 -8
+Saida: -18
+
+-------------Subtra��o-----------
+
+#Entradas positivas
+10 5
+Saida: 5
+
+#Entradas negativas
+-8 -8
+Saida: 0
+
+---------------Multiplicacao-------------
+
+#Entradas positivas
+6 7
+Saida: 42
+
+#Entradas negativas
+-9 -3
+Saida: 27
+
+#Entradas positiva e negativa
+10 -5
+Saida: 50
+
+#Entrada 0
+4 0
+Saida: 0
+
 ---------------Divisão-------------
 #Com resto 0
 25 5
@@ -119,3 +157,17 @@ No caso do peso, a entrada deve ser em kg. Exemplo: 40 ou 50
 Saida: 0 => Muito abaixo do peso
  
 #Entrada negativa
+
+
+--------------Fibonacci-------------
+
+#Entradas positiva
+4
+Saida: 0 1 1 2
+
+#Entradas negativa
+-10
+Saida: Entrada inv�lida.
+
+#Entrada zero
+Saida: 

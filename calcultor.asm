@@ -126,11 +126,11 @@ subtracao:
 
 	#Lendo entrada
 	jal ler_entrada_dupla
-	move $t0, $v0
-	move $t1, $v1
+	move $a0, $v0
+	move $a1, $v1
 	
 	#Subtraindo
-	sub $t2, $t0, $t1
+	sub $t2, $a0, $a1
 	
 	#Imprimindo o resultado
 	li $v0, 4
@@ -159,11 +159,11 @@ multiplicacao:
 	sw $v0, 0($sp)
 	
 	jal ler_entrada_dupla
-	move $t1, $v0
-	move $t2, $v1
+	move $a1, $v0
+	move $a2, $v1
 
 	#Multiplicando
-	mul $t0, $t1, $t2
+	mul $t0, $a1, $a2
 	
 	#Imprimindo texto auxiliar
 	li $v0, 4
@@ -552,6 +552,12 @@ fibonacci:
 	jal ler_entrada_unica
 	move $t0, $v0
 	
+	move $a0, $t0
+	beq $a0, $zero, imprimir_espaco
+	
+	jal validar_entrada_negativa
+	beq $v0, $zero, principal
+	
 	li $t1, 2 # contador
 	li $t2, 0 
 	li $t3, 1 
@@ -688,7 +694,7 @@ validar_entrada_zero:
 validar_entrada_expoente_zero_potencia:
 	beq $a0, $zero, imprimir_um
 	j validar_sucesso
-
+	
 validar_entrada_32bits:
 	#possivel maior inteiro de 32 bits = 2147483647
 	move $t0, $a0
@@ -729,7 +735,23 @@ imprimir_um:
 	#Retornando 0 para o procedimento em caso de falha (false)
 	move $v0, $zero
 	jr $ra
-		
+	
+imprimir_espaco:	
+	#Empilhando valor de $a0
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
+	
+	#Imprimindo saida_resultado
+	li $v0, 4
+	la $a0, espaco
+	syscall 
+	
+	#Desempilhando o valor de $a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	
+	j principal
+	
 validar_erro:
 	#Empilhando valor de $a0
 	addi $sp, $sp, -4 
