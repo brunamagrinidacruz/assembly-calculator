@@ -13,6 +13,9 @@ entrada_primeiro: .asciiz "Digite o primeiro valor: "
 entrada_segundo: .asciiz "Digite o segundo valor: "
 entrada_unica: .asciiz "Digite o valor: "
 entrada_invalida: .asciiz "Entrada invalida."
+entrada_imc_peso: .asciiz "Digite seu peso em kg: "
+entrada_imc_altura: .asciiz "Digite sua altura em metro: "
+entrada_pot_expoente: .asciiz "Digite o expoente: "
 
 #Saida
 saida_resultado: .asciiz "Resultado: "
@@ -217,10 +220,28 @@ divisao:
 	j principal
 	
 potencia:
+	#Empilhando a0
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
+	
 	#Lendo entrada
-	jal ler_entrada_dupla
+	li $v0, 4
+	la $a0, entrada_unica
+	syscall
+
+	li $v0, 5
+	syscall
+			
 	move $a1, $v0
-	move $a2, $v1
+	
+	li $v0, 4
+	la $a0, entrada_pot_expoente
+	syscall
+	
+	li $v0, 5
+	syscall
+	
+	move $a2, $v0
 	
 	move $a0, $a2
 	jal validar_entrada_negativa
@@ -249,6 +270,10 @@ potencia_endloop:
 	li $v0, 1
 	move $a0, $a1
 	syscall
+	
+	#Desempilhando a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 	
 	j principal
 	
@@ -369,10 +394,28 @@ fim_tabuada:
 
 #-------------------------------------IMC-------------------------------------
 imc:
+	#Empilhando a0
+	addi $sp, $sp, -4 
+	sw $a0, 0($sp)
+
 	#Lendo entrada
-	jal ler_entrada_dupla
+	li $v0, 4
+	la $a0, entrada_imc_peso
+	syscall
+	
+	li $v0, 5
+	syscall
+	
 	move $a1, $v0
-	move $a2, $v1
+	
+	li $v0, 4
+	la $a0, entrada_imc_altura
+	syscall
+	
+	li $v0, 5
+	syscall
+	
+	move $a2, $v0
 	
 	move $a0, $a1
 	jal validar_entrada_negativa
@@ -408,6 +451,10 @@ imc_setimo_caso:
 	la $a0, imc_str_setimo_caso
 	syscall
 
+	#Desempilhando a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	
 	j principal
 		
 imc_primeiro_caso: 
@@ -422,6 +469,10 @@ imc_primeiro_caso:
 	li $v0, 4 
 	la $a0, imc_str_primeiro_caso
 	syscall
+	
+	#Desempilhando a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 
 	j principal
 
@@ -437,6 +488,10 @@ imc_segundo_caso:
 	li $v0, 4 
 	la $a0, imc_str_segundo_caso
 	syscall
+	
+	#Desempilhando a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 
 	j principal
 		
@@ -452,6 +507,10 @@ imc_terceiro_caso:
 	li $v0, 4 
 	la $a0, imc_str_terceiro_caso
 	syscall
+	
+	#Desempilhando a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 
 	j principal
 	
@@ -467,6 +526,10 @@ imc_quarto_caso:
 	li $v0, 4 
 	la $a0, imc_str_quarto_caso
 	syscall
+	
+	#Desempilhando a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 
 	j principal
 	
@@ -482,6 +545,10 @@ imc_quinto_caso:
 	li $v0, 4 
 	la $a0, imc_str_quinto_caso
 	syscall
+	
+	#Desempilhando a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 
 	j principal
 	
@@ -497,6 +564,10 @@ imc_sexto_caso:
 	li $v0, 4 
 	la $a0, imc_str_sexto_caso
 	syscall
+	
+	#Desempilhando a0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
 
 	j principal
 
