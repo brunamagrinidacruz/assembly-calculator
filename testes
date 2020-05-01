@@ -165,8 +165,14 @@ Entrada: 2 40
 Saida: 10 => Muito abaixo do peso
  
 #Entrada negativa
+Entrada: -20 2
+Saida: Entrada invalida.
 
+Entrada: -30 -2
+Saida: Entrada invalida.
 
+Entrada: 50  -2
+Saida: Entrada invalida.
 
 --------------Fibonacci-------------
 
@@ -180,13 +186,3 @@ Saida: Entrada inv�lida.
 
 #Entrada zero
 Saida: 
-
-Entrada: -20 2
-Saida: Entrada invalida.
-
-Entrada: -30 -2
-Saida: Entrada invalida.
-
-Entrada: 50  -2
-Saida: Entrada invalida.
-
