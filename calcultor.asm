@@ -846,8 +846,9 @@ validar_entrada_16bits:
 ####
 
 imprimir_um:	
-	#Empilhando valor de $a0
-	addi $sp, $sp, -4 
+	#Empilhando 
+	addi $sp, $sp, -8
+	sw $v0, 4($sp) 
 	sw $a0, 0($sp)
 	
 	#Imprimindo saida_resultado
@@ -860,17 +861,19 @@ imprimir_um:
 	li $a0, 1
 	syscall
 
-	#Desempilhando o valor de $a0
+	#Desempilhando
 	lw $a0, 0($sp)
-	addi $sp, $sp, 4
+	lw $v0, 4($sp)
+	addi $sp, $sp, 8
 	
 	#Retornando 0 para o procedimento em caso de falha (false)
 	move $v0, $zero
 	jr $ra
 	
 imprimir_espaco:	
-	#Empilhando valor de $a0
-	addi $sp, $sp, -4 
+	#Empilhando
+	addi $sp, $sp, -8
+	sw $v0, 4($sp) 
 	sw $a0, 0($sp)
 	
 	#Imprimindo saida_resultado
@@ -878,15 +881,17 @@ imprimir_espaco:
 	la $a0, espaco
 	syscall 
 	
-	#Desempilhando o valor de $a0
+	#Desempilhando 
 	lw $a0, 0($sp)
-	addi $sp, $sp, 4
+	lw $v0, 4($sp)
+	addi $sp, $sp, 8
 	
 	j principal
 	
 validar_erro:
-	#Empilhando valor de $a0
-	addi $sp, $sp, -4 
+	#Empilhando
+	addi $sp, $sp, -8
+	sw $v0, 4($sp) 
 	sw $a0, 0($sp)
 	
 	#Imprimindo que a entrada e invalida
@@ -894,9 +899,10 @@ validar_erro:
 	la $a0, entrada_invalida
 	syscall
 	
-	#Desempilhando o valor de $a0
+	#Desempilhando 
 	lw $a0, 0($sp)
-	addi $sp, $sp, 4
+	lw $v0, 4($sp)
+	addi $sp, $sp, 8
 	
 	#Retornando 0 para o procedimento em caso de falha (false)
 	move $v0, $zero
