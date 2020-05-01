@@ -1,3 +1,7 @@
+# Bruna Magrini da Cruz, 11218813
+# Marlon José Martins 10249010
+# Isadora Carolina Siebert 11345580
+
 	.data
 	
 	.align 0
