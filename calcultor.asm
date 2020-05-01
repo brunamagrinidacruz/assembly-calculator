@@ -662,19 +662,19 @@ ler_entrada_unica:
 	jr $ra
 
 validar_entrada_32bits:
-	#poss�vel maior inteiro de 32 bits = 2147483647
+	#possivel maior inteiro de 32 bits = 2147483647
 	move $t0, $a0
-	addi $t1, $zero, 214748364
+	addi $t1, $zero, 2147483647
 	
 	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent�o... 
 	j validar_erro
 
 validar_entrada_16bits:
-	#poss�vel maior inteiro de 16 bits = 65535
+	#possivel maior inteiro de 16 bits = 65535
 	move $t0, $a0
 	addi $t1, $zero, 65535
 	
-	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro ent�o... 
+	blt $t0, $t1, validar_sucesso	#se entrada < maior inteiro entao... 
 	
 validar_erro:
 	#Imprimindo que a entrada e invalida
